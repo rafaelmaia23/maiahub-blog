@@ -1,169 +1,299 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
-import { slug } from 'github-slugger'
-import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
-import Link from '@/components/Link'
-import Tag from '@/components/Tag'
-import siteMetadata from '@/data/siteMetadata'
-import tagData from 'app/tag-data.json'
+import { TransmissionCard } from '@/components'
+import { SectionLabel, GlowBar, Tag, CategoryBadge, Pagination } from '@/components/ui'
+import { categories } from '@/data/categories'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-interface PaginationProps {
-  totalPages: number
-  currentPage: number
-}
 interface ListLayoutProps {
   posts: CoreContent<Blog>[]
   title: string
-  initialDisplayPosts?: CoreContent<Blog>[]
-  pagination?: PaginationProps
 }
 
-function Pagination({ totalPages, currentPage }: PaginationProps) {
-  const pathname = usePathname()
-  const segments = pathname.split('/')
-  const lastSegment = segments[segments.length - 1]
-  const basePath = pathname
-    .replace(/^\//, '') // Remove leading slash
-    .replace(/\/page\/\d+\/?$/, '') // Remove any trailing /page
-    .replace(/\/$/, '') // Remove trailing slash
-  const prevPage = currentPage - 1 > 0
-  const nextPage = currentPage + 1 <= totalPages
+function formatDateDot(dateStr: string): string {
+  const d = new Date(dateStr)
+  const year = d.getUTCFullYear()
+  const month = String(d.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(d.getUTCDate()).padStart(2, '0')
+  return `${year}.${month}.${day}`
+}
+
+function formatReadingTime(rt: { minutes: number }): string {
+  const mins = Math.max(1, Math.ceil(rt.minutes))
+  return `${mins} min`
+}
+
+type PostData = {
+  slug: string
+  title: string
+  date: string
+  summary?: string
+  tags: string[]
+  category: string
+  readingTime: { minutes: number }
+}
+
+const POSTS_PER_PAGE = 6
+
+function buildUrl(
+  current: URLSearchParams,
+  overrides: { q?: string; category?: string | null; tags?: string[]; page?: number }
+): string {
+  const params = new URLSearchParams()
+  const q = 'q' in overrides ? overrides.q : current.get('q')
+  const category = 'category' in overrides ? overrides.category : current.get('category')
+  const tags = 'tags' in overrides ? overrides.tags : current.getAll('tags').filter(Boolean)
+  const page = 'page' in overrides ? overrides.page : parseInt(current.get('page') || '1')
+
+  if (q) params.set('q', q)
+  if (category) params.set('category', category)
+  for (const tag of tags || []) params.append('tags', tag)
+  if (page && page > 1) params.set('page', String(page))
+
+  const qs = params.toString()
+  return qs ? `/blog?${qs}` : '/blog'
+}
+
+export default function ListLayoutWithTags({ posts, title }: ListLayoutProps) {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
+  const query = searchParams.get('q') || ''
+  const activeCategory = searchParams.get('category') || ''
+  const activeTags = searchParams.getAll('tags').filter(Boolean)
+  const hasFilters = !!(query || activeCategory || activeTags.length)
+  const currentPage = parseInt(searchParams.get('page') || '1')
+
+  // Filter posts
+  const filteredPosts = posts.filter((post) => {
+    const p = post as unknown as PostData
+
+    if (query) {
+      const q = query.toLowerCase()
+      const inTitle = p.title.toLowerCase().includes(q)
+      const inSummary = (p.summary || '').toLowerCase().includes(q)
+      const inTags = (p.tags || []).some((t) => t.toLowerCase().includes(q))
+      if (!inTitle && !inSummary && !inTags) return false
+    }
+
+    if (activeCategory && p.category !== activeCategory) return false
+
+    if (activeTags.length > 0) {
+      const postTags = p.tags || []
+      if (!activeTags.every((t) => postTags.includes(t))) return false
+    }
+
+    return true
+  })
+
+  const postCategories = [
+    ...new Set(posts.map((p) => (p as unknown as PostData).category).filter(Boolean)),
+  ]
+
+  const tagCounts: Record<string, number> = {}
+  for (const post of posts) {
+    const p = post as unknown as PostData
+    for (const tag of p.tags || []) {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1
+    }
+  }
+  const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a])
+
+  function toggleCategory(cat: string) {
+    const next = activeCategory === cat ? null : cat
+    router.push(buildUrl(searchParams, { category: next }))
+  }
+
+  function toggleTag(tag: string) {
+    const next = activeTags.includes(tag)
+      ? activeTags.filter((t) => t !== tag)
+      : [...activeTags, tag]
+    router.push(buildUrl(searchParams, { tags: next }))
+  }
+
+  function clearAll() {
+    router.push('/blog')
+  }
 
   return (
-    <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-      <nav className="flex justify-between">
-        {!prevPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
-            Previous
-          </button>
-        )}
-        {prevPage && (
-          <Link
-            href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
-            rel="prev"
-          >
-            Previous
-          </Link>
-        )}
-        <span>
-          {currentPage} of {totalPages}
-        </span>
-        {!nextPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
-            Next
-          </button>
-        )}
-        {nextPage && (
-          <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
-            Next
-          </Link>
-        )}
-      </nav>
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-10">
+      {/* Page title */}
+      <section className="mb-8">
+        <SectionLabel>{'// ARQUIVO DE TRANSMISSÕES'}</SectionLabel>
+        <h1 className="font-heading text-text-primary mt-2 text-2xl font-bold sm:text-3xl">
+          {title}
+        </h1>
+        <GlowBar className="mt-4" />
+      </section>
+
+      {/* Sidebar (mobile: above posts) + Posts grid */}
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
+        {/* Sidebar — mobile only (above posts) */}
+        <div className="border-border-line bg-card rounded-sm border p-6 lg:hidden">
+          <FilterSidebar
+            postCategories={postCategories}
+            sortedTags={sortedTags}
+            tagCounts={tagCounts}
+            activeCategory={activeCategory}
+            activeTags={activeTags}
+            hasFilters={hasFilters}
+            onToggleCategory={toggleCategory}
+            onToggleTag={toggleTag}
+            onClearAll={clearAll}
+          />
+        </div>
+
+        {/* Posts column */}
+        <div className="flex flex-col gap-6">
+          {!filteredPosts.length && (
+            <p className="text-text-muted font-body text-sm">Nenhuma transmissão encontrada.</p>
+          )}
+          {filteredPosts
+            .slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE)
+            .map((post) => {
+              const p = post as unknown as PostData
+              return (
+                <TransmissionCard
+                  key={p.slug}
+                  slug={p.slug}
+                  title={p.title}
+                  summary={p.summary || ''}
+                  date={formatDateDot(p.date)}
+                  readingTime={formatReadingTime(p.readingTime)}
+                  category={p.category || 'tecnologia'}
+                  tags={p.tags || []}
+                />
+              )
+            })}
+          {Math.ceil(filteredPosts.length / POSTS_PER_PAGE) > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(filteredPosts.length / POSTS_PER_PAGE)}
+              onPageChange={(p) => router.push(buildUrl(searchParams, { page: p }))}
+            />
+          )}
+        </div>
+
+        {/* Sidebar — desktop */}
+        <aside className="hidden lg:block">
+          <div className="border-border-line bg-card sticky top-24 rounded-sm border p-6">
+            <FilterSidebar
+              postCategories={postCategories}
+              sortedTags={sortedTags}
+              tagCounts={tagCounts}
+              activeCategory={activeCategory}
+              activeTags={activeTags}
+              hasFilters={hasFilters}
+              onToggleCategory={toggleCategory}
+              onToggleTag={toggleTag}
+              onClearAll={clearAll}
+            />
+          </div>
+        </aside>
+      </div>
     </div>
   )
 }
 
-export default function ListLayoutWithTags({
-  posts,
-  title,
-  initialDisplayPosts = [],
-  pagination,
-}: ListLayoutProps) {
-  const pathname = usePathname()
-  const tagCounts = tagData as Record<string, number>
-  const tagKeys = Object.keys(tagCounts)
-  const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
+interface FilterSidebarProps {
+  postCategories: string[]
+  sortedTags: string[]
+  tagCounts: Record<string, number>
+  activeCategory: string
+  activeTags: string[]
+  hasFilters: boolean
+  onToggleCategory: (cat: string) => void
+  onToggleTag: (tag: string) => void
+  onClearAll: () => void
+}
 
-  const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
+function FilterSidebar({
+  postCategories,
+  sortedTags,
+  tagCounts,
+  activeCategory,
+  activeTags,
+  hasFilters,
+  onToggleCategory,
+  onToggleTag,
+  onClearAll,
+}: FilterSidebarProps) {
+  const inactiveCategories = postCategories.filter((cat) => activeCategory !== cat)
+  const inactiveTags = sortedTags.filter((tag) => !activeTags.includes(tag))
 
   return (
-    <>
-      <div>
-        <div className="pt-6 pb-6">
-          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:hidden sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
-            {title}
-          </h1>
-        </div>
-        <div className="flex sm:space-x-24">
-          <div className="hidden h-full max-h-screen max-w-[280px] min-w-[280px] flex-wrap overflow-auto rounded-sm bg-gray-50 pt-5 shadow-md sm:flex dark:bg-gray-900/70 dark:shadow-gray-800/40">
-            <div className="px-6 py-4">
-              {pathname.startsWith('/blog') ? (
-                <h3 className="text-primary-500 font-bold uppercase">All Posts</h3>
-              ) : (
-                <Link
-                  href={`/blog`}
-                  className="hover:text-primary-500 dark:hover:text-primary-500 font-bold text-gray-700 uppercase dark:text-gray-300"
-                >
-                  All Posts
-                </Link>
-              )}
-              <ul>
-                {sortedTags.map((t) => {
-                  return (
-                    <li key={t} className="my-3">
-                      {decodeURI(pathname.split('/tags/')[1]) === slug(t) ? (
-                        <h3 className="text-primary-500 inline px-3 py-2 text-sm font-bold uppercase">
-                          {`${t} (${tagCounts[t]})`}
-                        </h3>
-                      ) : (
-                        <Link
-                          href={`/tags/${slug(t)}`}
-                          className="hover:text-primary-500 dark:hover:text-primary-500 px-3 py-2 text-sm font-medium text-gray-500 uppercase dark:text-gray-300"
-                          aria-label={`View posts tagged ${t}`}
-                        >
-                          {`${t} (${tagCounts[t]})`}
-                        </Link>
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          </div>
-          <div>
-            <ul>
-              {displayPosts.map((post) => {
-                const { path, date, title, summary, tags } = post
-                return (
-                  <li key={path} className="py-5">
-                    <article className="flex flex-col space-y-2 xl:space-y-0">
-                      <dl>
-                        <dt className="sr-only">Published on</dt>
-                        <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                          <time dateTime={date} suppressHydrationWarning>
-                            {formatDate(date, siteMetadata.locale)}
-                          </time>
-                        </dd>
-                      </dl>
-                      <div className="space-y-3">
-                        <div>
-                          <h2 className="text-2xl leading-8 font-bold tracking-tight">
-                            <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
-                              {title}
-                            </Link>
-                          </h2>
-                          <div className="flex flex-wrap">
-                            {tags?.map((tag) => <Tag key={tag} text={tag} />)}
-                          </div>
-                        </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                          {summary}
-                        </div>
-                      </div>
-                    </article>
-                  </li>
-                )
-              })}
-            </ul>
-            {pagination && pagination.totalPages > 1 && (
-              <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+    <div className="flex flex-col gap-6">
+      {/* Active filters */}
+      {hasFilters && (
+        <div>
+          <SectionLabel>{'// FILTROS ATIVOS'}</SectionLabel>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {activeCategory && (
+              <CategoryBadge
+                category={activeCategory}
+                onClick={() => onToggleCategory(activeCategory)}
+              />
             )}
+            {activeTags.map((tag) => (
+              <Tag key={tag} text={tag} isActive onClick={() => onToggleTag(tag)} />
+            ))}
           </div>
+          <button
+            type="button"
+            onClick={onClearAll}
+            className="font-body border-border-line text-text-muted hover:border-text-muted hover:text-text-secondary mt-3 rounded-sm border px-2 py-1 text-[10px] tracking-wider uppercase transition-colors"
+          >
+            ↺ limpar tudo
+          </button>
         </div>
-      </div>
-    </>
+      )}
+
+      {/* Categories */}
+      {inactiveCategories.length > 0 && (
+        <div>
+          <SectionLabel>{'// CATEGORIAS'}</SectionLabel>
+          <ul className="mt-3 flex flex-col gap-2">
+            {inactiveCategories.map((cat) => {
+              const config = categories[cat]
+              return (
+                <li key={cat}>
+                  <button
+                    type="button"
+                    onClick={() => onToggleCategory(cat)}
+                    className="font-body text-text-secondary hover:text-text-primary text-xs uppercase transition-colors"
+                  >
+                    {'> '}
+                    {config?.label || cat.toUpperCase()}
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
+
+      {/* Tags */}
+      {inactiveTags.length > 0 && (
+        <div>
+          <SectionLabel>{'// TAGS'}</SectionLabel>
+          <ul className="mt-3 flex flex-col gap-2">
+            {inactiveTags.map((tag) => (
+              <li key={tag}>
+                <button
+                  type="button"
+                  onClick={() => onToggleTag(tag)}
+                  className="font-body text-text-secondary hover:text-text-primary text-xs transition-colors"
+                >
+                  {'> '}
+                  {`${tag} (${tagCounts[tag]})`}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
   )
 }

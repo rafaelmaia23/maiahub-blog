@@ -2,6 +2,9 @@ import { ReactNode } from 'react'
 import type { Authors } from 'contentlayer/generated'
 import SocialIcon from '@/components/social-icons'
 import Image from '@/components/Image'
+import { AuthorPanel, CurrentlySection } from '@/components'
+import { GlowBar, SectionLabel } from '@/components/ui'
+import { authorData, currentlyItems } from '@/data/sidebarData'
 
 interface Props {
   children: ReactNode
@@ -12,40 +15,72 @@ export default function AuthorLayout({ children, content }: Props) {
   const { name, avatar, occupation, company, email, twitter, bluesky, linkedin, github } = content
 
   return (
-    <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
-            About
-          </h1>
-        </div>
-        <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
-          <div className="flex flex-col items-center space-x-2 pt-8">
-            {avatar && (
-              <Image
-                src={avatar}
-                alt="avatar"
-                width={192}
-                height={192}
-                className="h-48 w-48 rounded-full"
-              />
-            )}
-            <h3 className="pt-4 pb-2 text-2xl leading-8 font-bold tracking-tight">{name}</h3>
-            <div className="text-gray-500 dark:text-gray-400">{occupation}</div>
-            <div className="text-gray-500 dark:text-gray-400">{company}</div>
-            <div className="flex space-x-3 pt-6">
-              <SocialIcon kind="mail" href={`mailto:${email}`} />
-              <SocialIcon kind="github" href={github} />
-              <SocialIcon kind="linkedin" href={linkedin} />
-              <SocialIcon kind="x" href={twitter} />
-              <SocialIcon kind="bluesky" href={bluesky} />
-            </div>
-          </div>
-          <div className="prose dark:prose-invert max-w-none pt-8 pb-8 xl:col-span-2">
-            {children}
-          </div>
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-10">
+      {/* Page title bar */}
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="font-heading text-text-primary text-2xl font-bold">{'// SOBRE'}</h1>
+        <div className="border-accent-green/40 bg-card flex items-center gap-2 rounded-sm border px-4 py-2">
+          <span className="bg-accent-green h-1.5 w-1.5 rounded-full" />
+          <span className="font-body text-accent-green text-[11px] font-bold">ONLINE</span>
         </div>
       </div>
-    </>
+
+      {/* Two-column layout */}
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
+        {/* Main column */}
+        <div className="flex flex-col gap-6">
+          {/* Profile card */}
+          <div className="border-border-line bg-card flex flex-col gap-5 rounded-sm border p-8">
+            <SectionLabel>CREW PROFILE //</SectionLabel>
+            <GlowBar />
+
+            <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+              {/* Avatar */}
+              {avatar && (
+                <div className="border-accent-green/40 relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-2">
+                  <Image src={avatar} alt={name} fill className="object-cover" />
+                </div>
+              )}
+
+              {/* Name, role, social */}
+              <div className="flex flex-col gap-2">
+                <h2 className="font-heading text-text-primary text-xl font-bold">{name}</h2>
+                {occupation && (
+                  <p className="font-body text-text-secondary text-sm">{occupation}</p>
+                )}
+                {company && <p className="font-body text-text-muted text-xs">{company}</p>}
+                <div className="mt-1 flex items-center gap-3">
+                  <SocialIcon kind="mail" href={`mailto:${email}`} size={5} />
+                  <SocialIcon kind="github" href={github} size={5} />
+                  <SocialIcon kind="linkedin" href={linkedin} size={5} />
+                  <SocialIcon kind="x" href={twitter} size={5} />
+                  <SocialIcon kind="bluesky" href={bluesky} size={5} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bio / Manifesto card */}
+          <div className="border-border-line bg-elevated flex flex-col gap-4 rounded-sm border p-8">
+            <SectionLabel>{'// MISSÃO'}</SectionLabel>
+            <GlowBar />
+            <div className="prose prose-invert prose-sm font-body max-w-none leading-relaxed">
+              {children}
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <aside className="flex flex-col gap-6">
+          <AuthorPanel
+            name={authorData.name}
+            role={authorData.role}
+            bio={authorData.bio}
+            stats={authorData.stats}
+          />
+          <CurrentlySection items={currentlyItems} />
+        </aside>
+      </div>
+    </div>
   )
 }

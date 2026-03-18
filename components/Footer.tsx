@@ -1,35 +1,54 @@
-import Link from './Link'
-import siteMetadata from '@/data/siteMetadata'
-import SocialIcon from '@/components/social-icons'
+import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
-export default function Footer() {
+interface FooterLink {
+  href: string
+  label: string
+}
+
+interface FooterProps {
+  className?: string
+}
+
+const footerLinks: FooterLink[] = [
+  { href: '/', label: 'HOME' },
+  { href: '/about', label: 'SOBRE' },
+  { href: '/contact', label: 'CONTATO' },
+  { href: '/feed.xml', label: 'RSS' },
+]
+
+export function Footer({ className }: FooterProps) {
   return (
-    <footer>
-      <div className="mt-16 flex flex-col items-center">
-        <div className="mb-3 flex space-x-4">
-          <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={6} />
-          <SocialIcon kind="github" href={siteMetadata.github} size={6} />
-          <SocialIcon kind="facebook" href={siteMetadata.facebook} size={6} />
-          <SocialIcon kind="youtube" href={siteMetadata.youtube} size={6} />
-          <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={6} />
-          <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
-          <SocialIcon kind="bluesky" href={siteMetadata.bluesky} size={6} />
-          <SocialIcon kind="x" href={siteMetadata.x} size={6} />
-          <SocialIcon kind="instagram" href={siteMetadata.instagram} size={6} />
-          <SocialIcon kind="threads" href={siteMetadata.threads} size={6} />
-          <SocialIcon kind="medium" href={siteMetadata.medium} size={6} />
-        </div>
-        <div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
-          <div>{siteMetadata.author}</div>
-          <div>{` • `}</div>
-          <div>{`© ${new Date().getFullYear()}`}</div>
-          <div>{` • `}</div>
-          <Link href="/">{siteMetadata.title}</Link>
-        </div>
-        <div className="mb-8 text-sm text-gray-500 dark:text-gray-400">
-          <Link href="https://github.com/timlrx/tailwind-nextjs-starter-blog">
-            Tailwind Nextjs Theme
-          </Link>
+    <footer className={cn('bg-panel w-full', className)}>
+      {/* Glow line */}
+      <div
+        className="h-[2px] w-full"
+        style={{
+          background:
+            'linear-gradient(90deg, transparent 0%, #00ff88 30%, #00d4ff 70%, transparent 100%)',
+        }}
+      />
+      <div className="px-4 py-6 sm:px-6 lg:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 sm:flex-row sm:justify-between">
+          <span className="font-body text-text-muted text-[11px]">
+            © 2026 Maiahub // Todas as transmissões arquivadas
+          </span>
+
+          <nav
+            className="flex flex-wrap items-center gap-4 sm:gap-6"
+            aria-label="Navegação do rodapé"
+          >
+            {footerLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="font-body text-text-secondary hover:text-accent-green text-[11px] transition-colors"
+              >
+                {'> '}
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>

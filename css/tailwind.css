@@ -2,91 +2,128 @@
 @plugin "@tailwindcss/forms";
 @plugin '@tailwindcss/typography';
 @source '../node_modules/pliny';
-@custom-variant dark (&:where(.dark, .dark *));
 
-/* Core theme configuration */
+/* ============================================
+   STARLOG DESIGN SYSTEM — Tailwind v4 Theme
+   Dark-only theme. No light/dark toggle.
+   Tokens mapped from Pencil design system.
+   ============================================ */
+
 @theme {
-  /* Font families */
-  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  /* ── Font families ── */
+  --font-heading: 'Space Mono', monospace;
+  --font-body: 'JetBrains Mono', monospace;
 
-  /* Colors */
-  /* Copied from https://tailwindcss.com/docs/theme#default-theme-variable-reference */
-  --color-primary-50: oklch(0.971 0.014 343.198);
-  --color-primary-100: oklch(0.948 0.028 342.258);
-  --color-primary-200: oklch(0.899 0.061 343.231);
-  --color-primary-300: oklch(0.823 0.12 346.018);
-  --color-primary-400: oklch(0.718 0.202 349.761);
-  --color-primary-500: oklch(0.656 0.241 354.308);
-  --color-primary-600: oklch(0.592 0.249 0.584);
-  --color-primary-700: oklch(0.525 0.223 3.958);
-  --color-primary-800: oklch(0.459 0.187 3.815);
-  --color-primary-900: oklch(0.408 0.153 2.432);
-  --color-primary-950: oklch(0.284 0.109 3.907);
+  /* ── Background colors ── */
+  --color-deep-space: #0a0e1a;
+  --color-panel: #0f1424;
+  --color-card: #141a2e;
+  --color-elevated: #1a2140;
+  --color-input: #0d1220;
 
-  --color-gray-50: oklch(0.985 0.002 247.839);
-  --color-gray-100: oklch(0.967 0.003 264.542);
-  --color-gray-200: oklch(0.928 0.006 264.531);
-  --color-gray-300: oklch(0.872 0.01 258.338);
-  --color-gray-400: oklch(0.707 0.022 261.325);
-  --color-gray-500: oklch(0.551 0.027 264.364);
-  --color-gray-600: oklch(0.446 0.03 256.802);
-  --color-gray-700: oklch(0.373 0.034 259.733);
-  --color-gray-800: oklch(0.278 0.033 256.848);
-  --color-gray-900: oklch(0.21 0.034 264.665);
-  --color-gray-950: oklch(0.13 0.028 261.692);
+  /* ── Accent colors ── */
+  --color-accent-green: #00ff88;
+  --color-accent-green-dim: #00cc6a;
+  --color-accent-blue: #00d4ff;
+  --color-accent-blue-dim: #38bdf8;
+  --color-accent-purple: #a855f7;
+  --color-accent-purple-dim: #7b2fff;
+  --color-accent-amber: #f59e0b;
 
-  /* Line heights */
+  /* ── Text colors ── */
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #8892a8;
+  --color-text-muted: #4a5568;
+
+  /* ── Border colors ── */
+  --color-border-line: #1e2a4a;
+  --color-border-glow: #00ff8833;
+  --color-border-purple: #a855f744;
+
+  /* ── Primary color scale (accent green mapped) ── */
+  --color-primary-50: #e6fff3;
+  --color-primary-100: #b3ffe0;
+  --color-primary-200: #80ffcc;
+  --color-primary-300: #4dffb8;
+  --color-primary-400: #1affa3;
+  --color-primary-500: #00ff88;
+  --color-primary-600: #00cc6a;
+  --color-primary-700: #00994f;
+  --color-primary-800: #006635;
+  --color-primary-900: #00331a;
+  --color-primary-950: #001a0d;
+
+  /* ── Gray scale (deep space palette) ── */
+  --color-gray-50: #e8eaf0;
+  --color-gray-100: #c5c9d6;
+  --color-gray-200: #8892a8;
+  --color-gray-300: #6b7694;
+  --color-gray-400: #4a5568;
+  --color-gray-500: #3a4560;
+  --color-gray-600: #2a3450;
+  --color-gray-700: #1e2a4a;
+  --color-gray-800: #141a2e;
+  --color-gray-900: #0f1424;
+  --color-gray-950: #0a0e1a;
+
+  /* ── Spacing scale (design system tokens) ── */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* ── Border radius ── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* ── Line heights (extended) ── */
   --line-height-11: 2.75rem;
   --line-height-12: 3rem;
   --line-height-13: 3.25rem;
   --line-height-14: 3.5rem;
 
-  /* Z-index values */
+  /* ── Z-index ── */
   --z-60: 60;
   --z-70: 70;
   --z-80: 80;
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+/* ── Base styles ── */
 @layer base {
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--color-border-line);
   }
 
   a,
   button {
-    outline-color: var(--color-primary-500);
+    outline-color: var(--color-accent-green);
   }
 
   a:focus-visible,
   button:focus-visible {
     outline: 2px solid;
     border-radius: var(--radius-sm);
-    outline-color: var(--color-primary-500);
+    outline-color: var(--color-accent-green);
   }
 }
 
+/* ── Prose (typography plugin overrides) ── */
 @layer utilities {
   .prose {
     & a {
-      color: var(--color-primary-500);
+      color: var(--color-accent-green);
       &:hover {
-        color: var(--color-primary-600);
+        color: var(--color-accent-green-dim);
       }
       & code {
-        color: var(--color-primary-400);
+        color: var(--color-accent-green);
       }
     }
     & :where(h1, h2) {
@@ -97,23 +134,30 @@
       font-weight: 600;
     }
     & :where(code):not(pre code) {
-      color: var(--color-indigo-500);
-    }
-  }
-
-  .prose-invert {
-    & a {
-      color: var(--color-primary-500);
-      &:hover {
-        color: var(--color-primary-400);
-      }
-      & code {
-        color: var(--color-primary-400);
-      }
+      color: var(--color-accent-purple);
     }
     & :where(h1, h2, h3, h4, h5, h6) {
-      color: var(--color-gray-100);
+      color: var(--color-text-primary);
     }
+  }
+}
+
+/* ── Glow effects (from design system) ── */
+@layer utilities {
+  .glow-text {
+    text-shadow: 0 0 10px var(--color-accent-green), 0 0 20px var(--color-border-glow);
+  }
+
+  .glow-line {
+    box-shadow: 0 0 4px var(--color-accent-green), 0 0 8px var(--color-border-glow);
+  }
+
+  .glow-box {
+    box-shadow: 0 0 8px var(--color-border-glow), 0 4px 16px var(--color-border-glow);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 8px var(--color-border-purple), 0 4px 16px var(--color-border-purple);
   }
 }
 
@@ -126,7 +170,7 @@
 }
 
 .footnotes {
-  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
+  @apply mt-12 border-t border-border-line pt-8;
 }
 
 .data-footnote-backref {
@@ -142,11 +186,10 @@
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
   transition:

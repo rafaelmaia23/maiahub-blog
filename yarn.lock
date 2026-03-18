@@ -4950,7 +4950,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^2.0.0":
+"clsx@npm:^2.0.0, clsx@npm:^2.1.1":
   version: 2.1.1
   resolution: "clsx@npm:2.1.1"
   checksum: acd3e1ab9d8a433ecb3cc2f6a05ab95fe50b4a3cfc5ba47abb6cbf3754585fcb87b84e90c822a1f256c4198e3b41c7f6c391577ffc8678ad587fc0976b24fd57
@@ -8132,6 +8132,15 @@ __metadata:
   dependencies:
     yallist: ^3.0.2
   checksum: c154ae1cbb0c2206d1501a0e94df349653c92c8cbb25236d7e85190bcaf4567a03ac6eb43166fabfa36fd35623694da7233e88d9601fbf411a9a481d85dbd2cb
+  languageName: node
+  linkType: hard
+
+"lucide-react@npm:^0.577.0":
+  version: 0.577.0
+  resolution: "lucide-react@npm:0.577.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: f39db5fb91e925480c9d697f4fc2474d692abcda8e069a5be3295ce9c370dbf7fb55a6b88f94ab5d8b2f834bb76407926b312e2f88992aad62e7567efeb87dcc
   languageName: node
   linkType: hard
 
@@ -11574,6 +11583,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tailwind-merge@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "tailwind-merge@npm:3.5.0"
+  checksum: 34d1ba25a9e55fdc0885a14221650623472b70c969b8da0dd494753a311318469f203b21fc2278d9b679d41c04451b5e2c725d14d0f510ca07feae903c6479d3
+  languageName: node
+  linkType: hard
+
 "tailwind-nextjs-starter-blog@workspace:.":
   version: 0.0.0-use.local
   resolution: "tailwind-nextjs-starter-blog@workspace:."
@@ -11591,6 +11607,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^8.54.0
     "@typescript-eslint/parser": ^8.54.0
     body-scroll-lock: ^3.1.5
+    clsx: ^2.1.1
     contentlayer2: 0.5.8
     cross-env: ^10.1.0
     esbuild: 0.27.3
@@ -11605,6 +11622,7 @@ __metadata:
     husky: ^9.1.7
     image-size: 2.0.2
     lint-staged: ^16.2.7
+    lucide-react: ^0.577.0
     next: 15.5.12
     next-contentlayer2: 0.5.8
     next-themes: ^0.4.6
@@ -11626,6 +11644,7 @@ __metadata:
     remark-gfm: ^4.0.1
     remark-github-blockquote-alert: ^2.0.1
     remark-math: ^6.0.0
+    tailwind-merge: ^3.5.0
     tailwindcss: ^4.1.18
     typescript: ^5.9.3
     unist-util-visit: ^5.1.0

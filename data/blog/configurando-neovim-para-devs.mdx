@@ -1,0 +1,26 @@
+---
+title: 'Configurando Neovim para Devs Modernos'
+date: '2025-12-05'
+category: 'tecnologia'
+tags: ['neovim', 'editor', 'produtividade']
+summary: 'Um guia completo para transformar o Neovim em um ambiente de desenvolvimento moderno. Da instalação ao LSP, autocompletion e um workflow que rivaliza com qualquer IDE.'
+authors: ['default']
+---
+
+## Por Que Neovim em 2025?
+
+A pergunta que todo dev faz antes de entrar nessa toca de coelho. A resposta curta: velocidade, customização total e o prazer estranho de nunca precisar tirar as mãos do teclado. A resposta longa é este post inteiro.
+
+Depois de anos alternando entre VS Code, JetBrains e tentativas frustradas com Vim clássico, a versão moderna do Neovim finalmente resolveu os problemas que me faziam voltar para editores gráficos. Lua como linguagem de configuração foi o divisor de águas — configurar o editor passou a ser tão expressivo quanto escrever código de verdade.
+
+## Estrutura de Configuração
+
+A base de tudo é uma boa estrutura de diretórios. Organizo minha config em `~/.config/nvim/` com `init.lua` como ponto de entrada e um diretório `lua/` separado por responsabilidade: plugins, keymaps, LSP e opções gerais.
+
+O gerenciador de plugins que uso atualmente é o `lazy.nvim`, que carrega plugins sob demanda e reduz drasticamente o tempo de startup. Com ele, o Neovim abre em menos de 50ms mesmo com dezenas de plugins ativos.
+
+## LSP, Autocomplete e Treesitter
+
+O tripé que torna o Neovim competitivo com IDEs comerciais. O `nvim-lspconfig` junto com o `mason.nvim` resolve a instalação e configuração de servidores de linguagem com pouquíssima fricção. `nvim-cmp` cuida do autocomplete com múltiplas fontes — LSP, snippets, buffer e caminho de arquivo.
+
+O Treesitter muda o jogo para syntax highlighting e manipulação estrutural de código. Selecionar blocos, navegar entre funções e reformatar ficam muito mais precisos quando o editor entende a árvore sintática real em vez de usar regex.

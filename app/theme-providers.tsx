@@ -1,12 +1,7 @@
 'use client'
 
-import { ThemeProvider } from 'next-themes'
-import siteMetadata from '@/data/siteMetadata'
-
+// Dark-only theme — no theme switching needed.
+// This file is kept as a no-op for any code that may still import it.
 export function ThemeProviders({ children }: { children: React.ReactNode }) {
-  return (
-    <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme} enableSystem>
-      {children}
-    </ThemeProvider>
-  )
+  return <>{children}</>
 }

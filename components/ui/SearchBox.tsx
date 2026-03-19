@@ -14,7 +14,7 @@ interface SearchBoxProps {
 
 export function SearchBox({
   className,
-  placeholder = 'search transmissions...',
+  placeholder = 'Busque Transmissões...',
   value,
   defaultValue,
   onSearch,

@@ -1,6 +1,6 @@
 import { TransmissionCard, AuthorPanel, CurrentlySection } from '@/components'
 import { Pagination, HeroStatus, GlowBar } from '@/components/ui'
-import { authorData, currentlyItems } from '@/data/sidebarData'
+import { authorData, currentlyData } from '@/data/siteContent'
 
 const POSTS_PER_PAGE = 6
 
@@ -42,9 +42,10 @@ export default function Home({ posts, currentPage }: HomeProps) {
     <div>
       {/* Hero — full width background */}
       <section
-        className="relative bg-cover bg-center"
+        className="relative bg-cover"
         style={{
           backgroundImage: "url('/static/images/hero-section.png')",
+          backgroundPosition: '60% center',
           minHeight: '400px',
         }}
       >
@@ -64,8 +65,7 @@ export default function Home({ posts, currentPage }: HomeProps) {
 
             {/* Title */}
             <h1
-              className="font-heading font-bold text-[#e0e0f0]"
-              style={{ fontSize: '52px', lineHeight: '1.1' }}
+              className="font-heading font-bold text-[#e0e0f0] text-[36px] leading-[1.1] sm:text-[52px]"
             >
               ARQUIVO DE
               <br />
@@ -74,7 +74,8 @@ export default function Home({ posts, currentPage }: HomeProps) {
 
             {/* Description */}
             <p className="font-body text-[15px] text-[#a0b4d0]">
-              Registros de exploração em dev, design e tecnologia. Sintonize, viajante.
+              Registros de explorações pessoais sobre os meus interesses. Crio logs sobre dev,
+              tecnologia, audivisual, RPG entre outros. Sintonize, viajante.
             </p>
           </div>
 
@@ -83,18 +84,18 @@ export default function Home({ posts, currentPage }: HomeProps) {
             className="w-full rounded-sm p-[1px] lg:w-[540px] lg:shrink-0"
             style={{ background: 'linear-gradient(135deg, #00ff88, #00e5ff)' }}
           >
-            <div className="font-heading rounded-sm bg-[#161829] p-4 text-xs">
+            <div className="font-heading overflow-hidden break-words rounded-sm bg-[#161829] p-4 text-xs">
               <p className="font-bold text-[#00ff88]">
                 {'[ TERMINAL v4.2.1 // MAINFRAME MAIAHUB ]'}
               </p>
-              <p className="my-2 text-[#2a3a4a]">{'─'.repeat(48)}</p>
+              <div className="my-2 h-px w-full bg-[#2a3a4a]" />
               <p className="text-[#4a6a7a]">{'sys.init > carregando módulos...'}</p>
               <p className="text-[#4a6a7a]">{'sys.init > verificando integridade do arquivo...'}</p>
               <p className="text-[#4a6a7a]">{'sys.init > bem-vindo, viajante.'}</p>
               <p className="mt-1 text-[#00e5ff]">
                 {'sync > sincronizando transmissões recentes...'}
               </p>
-              <p className="my-2 text-[#2a3a4a]">{'─'.repeat(48)}</p>
+              <div className="my-2 h-px w-full bg-[#2a3a4a]" />
               <HeroStatus />
               <p className="mt-4 text-[#2a3a4a]">&nbsp;</p>
               <p className="flex items-center gap-1 text-[#4a6a7a]">
@@ -145,11 +146,16 @@ export default function Home({ posts, currentPage }: HomeProps) {
           <aside className="flex flex-col gap-6">
             <AuthorPanel
               name={authorData.name}
-              role={authorData.role}
-              bio={authorData.bio}
+              role={authorData.occupation}
+              bio={authorData.bioShort}
+              avatar={authorData.avatar}
+              sectionTitle={authorData.sectionTitle}
               stats={authorData.stats}
             />
-            <CurrentlySection items={currentlyItems} />
+            <CurrentlySection
+              items={currentlyData.items}
+              sectionTitle={currentlyData.sectionTitle}
+            />
           </aside>
         </div>
       </div>

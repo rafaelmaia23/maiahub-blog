@@ -92,6 +92,12 @@ export default function ListLayoutWithTags({ posts, title }: ListLayoutProps) {
     ...new Set(posts.map((p) => (p as unknown as PostData).category).filter(Boolean)),
   ]
 
+  const categoryCounts: Record<string, number> = {}
+  for (const post of posts) {
+    const p = post as unknown as PostData
+    if (p.category) categoryCounts[p.category] = (categoryCounts[p.category] || 0) + 1
+  }
+
   const tagCounts: Record<string, number> = {}
   for (const post of posts) {
     const p = post as unknown as PostData
@@ -119,21 +125,26 @@ export default function ListLayoutWithTags({ posts, title }: ListLayoutProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-10">
-      {/* Page title */}
-      <section className="mb-8">
-        <SectionLabel>{'// ARQUIVO DE TRANSMISSÕES'}</SectionLabel>
-        <h1 className="font-heading text-text-primary mt-2 text-2xl font-bold sm:text-3xl">
-          {title}
+      {/* Page title row */}
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="font-body text-text-primary text-2xl font-bold sm:text-3xl">
+          {'// ARQUIVO DE TRANSMISSÕES'}
         </h1>
-        <GlowBar className="mt-4" />
-      </section>
+        <div className="flex shrink-0 items-center gap-2 rounded bg-[#0d1f14] px-4 py-2 border border-[#00ff88]">
+          <span className="h-1.5 w-1.5 rounded-sm bg-[#00ff88]" />
+          <span className="font-body text-[11px] font-bold text-[#00ff88]">
+            {filteredPosts.length} registros encontrados
+          </span>
+        </div>
+      </div>
 
       {/* Sidebar (mobile: above posts) + Posts grid */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
         {/* Sidebar — mobile only (above posts) */}
-        <div className="border-border-line bg-card rounded-sm border p-6 lg:hidden">
+        <div className="lg:hidden">
           <FilterSidebar
             postCategories={postCategories}
+            categoryCounts={categoryCounts}
             sortedTags={sortedTags}
             tagCounts={tagCounts}
             activeCategory={activeCategory}
@@ -147,6 +158,14 @@ export default function ListLayoutWithTags({ posts, title }: ListLayoutProps) {
 
         {/* Posts column */}
         <div className="flex flex-col gap-6">
+          {/* Column header */}
+          <div className="flex items-center gap-4">
+            <span className="font-body text-text-primary whitespace-nowrap text-sm font-bold">
+              {'// TODAS AS TRANSMISSÕES'}
+            </span>
+            <GlowBar className="flex-1" />
+          </div>
+
           {!filteredPosts.length && (
             <p className="text-text-muted font-body text-sm">Nenhuma transmissão encontrada.</p>
           )}
@@ -178,9 +197,10 @@ export default function ListLayoutWithTags({ posts, title }: ListLayoutProps) {
 
         {/* Sidebar — desktop */}
         <aside className="hidden lg:block">
-          <div className="border-border-line bg-card sticky top-24 rounded-sm border p-6">
+          <div className="sticky top-24">
             <FilterSidebar
               postCategories={postCategories}
+              categoryCounts={categoryCounts}
               sortedTags={sortedTags}
               tagCounts={tagCounts}
               activeCategory={activeCategory}
@@ -199,6 +219,7 @@ export default function ListLayoutWithTags({ posts, title }: ListLayoutProps) {
 
 interface FilterSidebarProps {
   postCategories: string[]
+  categoryCounts: Record<string, number>
   sortedTags: string[]
   tagCounts: Record<string, number>
   activeCategory: string
@@ -209,8 +230,11 @@ interface FilterSidebarProps {
   onClearAll: () => void
 }
 
+const CARD = 'rounded-md border border-[#1e2540] bg-[#13152b] flex flex-col gap-3'
+
 function FilterSidebar({
   postCategories,
+  categoryCounts,
   sortedTags,
   tagCounts,
   activeCategory,
@@ -225,11 +249,12 @@ function FilterSidebar({
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Active filters */}
+      {/* Card 1: Filtros Ativos */}
       {hasFilters && (
-        <div>
+        <div className={`${CARD} p-5`}>
           <SectionLabel>{'// FILTROS ATIVOS'}</SectionLabel>
-          <div className="mt-3 flex flex-wrap gap-2">
+          <GlowBar />
+          <div className="flex flex-wrap gap-2">
             {activeCategory && (
               <CategoryBadge
                 category={activeCategory}
@@ -240,58 +265,50 @@ function FilterSidebar({
               <Tag key={tag} text={tag} isActive onClick={() => onToggleTag(tag)} />
             ))}
           </div>
-          <button
-            type="button"
-            onClick={onClearAll}
-            className="font-body border-border-line text-text-muted hover:border-text-muted hover:text-text-secondary mt-3 rounded-sm border px-2 py-1 text-[10px] tracking-wider uppercase transition-colors"
-          >
-            ↺ limpar tudo
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={onClearAll}
+              className="font-body border-border-line text-text-muted hover:border-text-muted hover:text-text-secondary rounded-sm border px-2 py-1 text-[10px] tracking-wider uppercase transition-colors"
+            >
+              ↺ limpar tudo
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Categories */}
+      {/* Card 2: Categorias */}
       {inactiveCategories.length > 0 && (
-        <div>
-          <SectionLabel>{'// CATEGORIAS'}</SectionLabel>
-          <ul className="mt-3 flex flex-col gap-2">
-            {inactiveCategories.map((cat) => {
-              const config = categories[cat]
-              return (
-                <li key={cat}>
-                  <button
-                    type="button"
-                    onClick={() => onToggleCategory(cat)}
-                    className="font-body text-text-secondary hover:text-text-primary text-xs uppercase transition-colors"
-                  >
-                    {'> '}
-                    {config?.label || cat.toUpperCase()}
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
+        <div className={`${CARD} p-6`}>
+          <SectionLabel className="text-accent-green">{'// CATEGORIAS'}</SectionLabel>
+          <GlowBar />
+          <div className="flex flex-wrap gap-2">
+            {inactiveCategories.map((cat) => (
+              <CategoryBadge
+                key={cat}
+                category={cat}
+                count={categoryCounts[cat]}
+                onClick={() => onToggleCategory(cat)}
+              />
+            ))}
+          </div>
         </div>
       )}
 
-      {/* Tags */}
+      {/* Card 3: Tags */}
       {inactiveTags.length > 0 && (
-        <div>
-          <SectionLabel>{'// TAGS'}</SectionLabel>
-          <ul className="mt-3 flex flex-col gap-2">
+        <div className={`${CARD} p-6`}>
+          <SectionLabel className="text-accent-green">{'// TAGS'}</SectionLabel>
+          <GlowBar />
+          <div className="flex flex-wrap gap-2">
             {inactiveTags.map((tag) => (
-              <li key={tag}>
-                <button
-                  type="button"
-                  onClick={() => onToggleTag(tag)}
-                  className="font-body text-text-secondary hover:text-text-primary text-xs transition-colors"
-                >
-                  {'> '}
-                  {`${tag} (${tagCounts[tag]})`}
-                </button>
-              </li>
+              <Tag
+                key={tag}
+                text={`${tag} (${tagCounts[tag]})`}
+                onClick={() => onToggleTag(tag)}
+              />
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </div>

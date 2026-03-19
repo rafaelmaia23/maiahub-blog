@@ -4,7 +4,7 @@ import type { Blog, Authors } from 'contentlayer/generated'
 import Link from 'next/link'
 import { AuthorPanel, CurrentlySection } from '@/components'
 import { CategoryBadge, Tag, GlowBar } from '@/components/ui'
-import { authorData, currentlyItems } from '@/data/sidebarData'
+import { authorData, currentlyData } from '@/data/siteContent'
 
 interface LayoutProps {
   content: CoreContent<Blog>
@@ -76,11 +76,11 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
           </div>
 
           {/* Card 3: Prev/Next Navigation */}
-          <div className="border-border-line bg-card flex items-center justify-between rounded-sm border px-6 py-5">
+          <div className="border-border-line bg-card flex flex-col items-center gap-4 rounded-sm border px-6 py-5 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-center">
             {prev && prev.path ? (
               <Link
                 href={`/${prev.path}`}
-                className="font-body group flex flex-col gap-1 transition-colors"
+                className="font-body group flex w-full min-w-0 flex-col items-center gap-1 transition-colors sm:items-start"
               >
                 <span className="text-accent-green text-xs font-semibold">
                   {'< TRANSMISSÃO ANTERIOR'}
@@ -95,20 +95,20 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
 
             <Link
               href="/blog"
-              className="font-body text-accent-green hover:text-accent-green-dim shrink-0 text-xs font-semibold transition-colors"
+              className="font-body text-accent-green hover:text-accent-green-dim text-xs font-semibold transition-colors"
             >
-              {'[ TODOS OS POSTS ]'}
+              {'[ TODAS AS TRANSMISSÕES ]'}
             </Link>
 
             {next && next.path ? (
               <Link
                 href={`/${next.path}`}
-                className="font-body group flex flex-col items-end gap-1 transition-colors"
+                className="font-body group flex w-full min-w-0 flex-col items-center gap-1 transition-colors sm:items-end"
               >
                 <span className="text-accent-green text-xs font-semibold">
                   {'PRÓXIMA TRANSMISSÃO >'}
                 </span>
-                <span className="text-text-secondary group-hover:text-accent-green text-[11px] transition-colors">
+                <span className="text-text-secondary group-hover:text-accent-green text-right text-[11px] transition-colors">
                   {next.title}
                 </span>
               </Link>
@@ -122,11 +122,16 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
         <aside className="flex flex-col gap-6">
           <AuthorPanel
             name={authorData.name}
-            role={authorData.role}
-            bio={authorData.bio}
+            role={authorData.occupation}
+            bio={authorData.bioShort}
+            avatar={authorData.avatar}
+            sectionTitle={authorData.sectionTitle}
             stats={authorData.stats}
           />
-          <CurrentlySection items={currentlyItems} />
+          <CurrentlySection
+            items={currentlyData.items}
+            sectionTitle={currentlyData.sectionTitle}
+          />
         </aside>
       </div>
     </div>

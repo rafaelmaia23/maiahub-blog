@@ -58,35 +58,78 @@ Autor padrão: `data/authors/default.mdx`.
 
 ---
 
-## `data/sidebarData.ts`
+## `data/siteContent.ts` — fonte de verdade centralizada
 
-Dados estáticos usados nos painéis laterais da home e do blog.
+**Server-only.** Não importar em client components (`'use client'`).
+
+Lê `allAuthors` do Contentlayer e centraliza todo o conteúdo das seções do site.
+
+### Exports
+
+| Export | Uso |
+|--------|-----|
+| `authorData` | Dados do autor para AuthorPanel e sidebar |
+| `contactsData` | Canais e disponibilidade para `/contact` |
+| `currentlyData` | Items da seção Currently |
+| `osData` | Tech stack para `/about` |
+| `missionLogData` | Log de missão para `/about` |
+| `manifestoData` | Slug e sectionTitle do manifesto MDX |
 
 ### `authorData`
 
 ```ts
 {
-  name: string       // Nome exibido no AuthorPanel
-  role: string       // Cargo/função
-  bio: string        // Biografia curta
-  stats: {
-    posts: string    // Número de transmissões (label: TRANSMISSÕES)
-    readers: string  // Mundos/readers (label: MUNDOS)
-    days: string     // Status da missão (label: MISSÃO)
-  }
+  name: string         // Do authors/default.mdx
+  avatar: string       // Do authors/default.mdx
+  occupation: string   // Do authors/default.mdx
+  email: string        // Do authors/default.mdx
+  github: string       // Do authors/default.mdx
+  linkedin: string     // Do authors/default.mdx
+  twitter: string      // Do authors/default.mdx
+  bioShort: string     // Biografia curta para o sidebar
+  sectionTitle: string // Label do painel — 'CREW PROFILE //'
+  stats: Array<{
+    label: string                       // Ex: 'TRANSMISSÕES', 'MUNDOS', 'MISSÃO'
+    value: string                       // Valor dinâmico (allBlogs.length, etc.)
+    color: 'green' | 'blue' | 'purple'
+  }>
 }
 ```
 
-### `currentlyItems` (array de `CurrentlyItem`)
+### `currentlyData`
+
+```ts
+{
+  sectionTitle: string   // Label da seção — 'STATUS // CURRENTLY'
+  items: CurrentlyItem[] // Ver tipo abaixo
+}
+```
+
+### `CurrentlyItem`
 
 ```ts
 {
   label: string                       // Ex: 'LENDO', 'OUVINDO', 'BUILDANDO'
   value: string                       // Conteúdo exibido
   color: 'green' | 'blue' | 'purple'
-  imageSrc?: string                   // Imagem opcional (140px altura)
+  imageSrc?: string                   // Imagem em public/static/images/currently/ (140px altura)
 }
 ```
+
+Para adicionar um item ao Currently, basta adicionar um objeto em `currentlyData.items`.
+
+### Fonte de verdade do autor
+
+`data/authors/default.mdx` é a fonte de verdade para nome, avatar, occupation e links de contato.
+O corpo MDX do arquivo é a bio longa renderizada em `//PILOTO` no AuthorLayout.
+
+---
+
+## `data/pages/manifest.mdx` — manifesto do blog
+
+Documento MDX independente renderizado em `//MISSÃO` no AuthorLayout.
+Tipo Contentlayer: `Page` (filePathPattern: `pages/**/*.mdx`).
+Slug calculado: `manifest`.
 
 ---
 

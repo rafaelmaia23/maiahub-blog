@@ -104,14 +104,15 @@ Usa: `CategoryBadge`, `Tag` (de `ui/`).
 ### `AuthorPanel`
 Painel lateral do autor com avatar, bio e stats.
 ```tsx
-<AuthorPanel name role bio avatar? stats?: { posts; readers; days } className? />
+<AuthorPanel name role bio avatar? sectionTitle? stats?: Array<{ label; value; color }> className? />
 ```
+`stats` é um array de `{ label: string; value: string; color: 'green'|'blue'|'purple' }`.
 Usa: `SectionLabel`, `StatItem` (de `ui/`).
 
 ### `CurrentlySection`
-Painel lateral "STATUS // CURRENTLY" com lista de itens.
+Painel lateral com lista de itens do tipo "currently".
 ```tsx
-<CurrentlySection items: CurrentlyItem[] className? />
+<CurrentlySection items: CurrentlyItem[] sectionTitle? className? />
 // CurrentlyItem: { label, value, color: 'green'|'blue'|'purple', imageSrc? }
 ```
 Usa: `SectionLabel`, `StatusItem` (de `ui/`). `CurrentlyItem` exportado do mesmo arquivo.

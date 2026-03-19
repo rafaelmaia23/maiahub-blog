@@ -100,7 +100,7 @@ export const Blog = defineDocumentType(() => ({
   fields: {
     title: { type: 'string', required: true },
     date: { type: 'date', required: true },
-    category: { type: 'string', default: 'dev' },
+    category: { type: 'string', default: 'tecnologia' },
     tags: { type: 'list', of: { type: 'string' }, default: [] },
     lastmod: { type: 'date' },
     draft: { type: 'boolean' },
@@ -140,6 +140,7 @@ export const Authors = defineDocumentType(() => ({
     company: { type: 'string' },
     email: { type: 'string' },
     twitter: { type: 'string' },
+    instagram: { type: 'string' },
     bluesky: { type: 'string' },
     linkedin: { type: 'string' },
     github: { type: 'string' },
@@ -148,9 +149,24 @@ export const Authors = defineDocumentType(() => ({
   computedFields,
 }))
 
+export const Page = defineDocumentType(() => ({
+  name: 'Page',
+  filePathPattern: 'pages/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+  },
+  computedFields: {
+    slug: {
+      type: 'string',
+      resolve: (doc) => doc._raw.flattenedPath.replace(/^.+?(\/)/, ''),
+    },
+  },
+}))
+
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blog, Authors],
+  documentTypes: [Blog, Authors, Page],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [

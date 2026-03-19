@@ -3,20 +3,31 @@ import Image from 'next/image'
 import { SectionLabel } from './ui/SectionLabel'
 import { StatItem } from './ui/StatItem'
 
+interface StatEntry {
+  label: string
+  value: string
+  color: 'green' | 'blue' | 'purple'
+}
+
 interface AuthorPanelProps {
   name: string
   role: string
   bio: string
   avatar?: string
-  stats?: {
-    posts: string
-    readers: string
-    days: string
-  }
+  sectionTitle?: string
+  stats?: StatEntry[]
   className?: string
 }
 
-export function AuthorPanel({ name, role, bio, avatar, stats, className }: AuthorPanelProps) {
+export function AuthorPanel({
+  name,
+  role,
+  bio,
+  avatar,
+  sectionTitle = 'CREW PROFILE //',
+  stats,
+  className,
+}: AuthorPanelProps) {
   return (
     <div
       className={cn(
@@ -24,10 +35,10 @@ export function AuthorPanel({ name, role, bio, avatar, stats, className }: Autho
         className
       )}
     >
-      <SectionLabel className="text-accent-green font-bold">CREW PROFILE //</SectionLabel>
+      <SectionLabel className="text-accent-green font-bold">{sectionTitle}</SectionLabel>
 
       {/* Avatar */}
-      <div className="relative h-20 w-20 overflow-hidden rounded-sm border-2 border-[#00e5ff]">
+      <div className="relative h-32 w-32 overflow-hidden rounded-sm border-2 border-[#00e5ff]">
         {avatar ? (
           <Image src={avatar} alt={name} fill className="object-cover" />
         ) : (
@@ -47,11 +58,11 @@ export function AuthorPanel({ name, role, bio, avatar, stats, className }: Autho
       <p className="font-body text-text-secondary text-center text-xs leading-relaxed">{bio}</p>
 
       {/* Stats */}
-      {stats && (
+      {stats && stats.length > 0 && (
         <div className="border-border-line flex w-full justify-between border-t pt-4">
-          <StatItem value={stats.posts} label="TRANSMISSÕES" color="green" />
-          <StatItem value={stats.readers} label="MUNDOS" color="blue" />
-          <StatItem value={stats.days} label="MISSÃO" color="purple" />
+          {stats.map((stat) => (
+            <StatItem key={stat.label} value={stat.value} label={stat.label} color={stat.color} />
+          ))}
         </div>
       )}
     </div>

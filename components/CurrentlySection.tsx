@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { GlowBar } from './ui/GlowBar'
 import { SectionLabel } from './ui/SectionLabel'
 import { StatusItem } from './ui/StatusItem'
 
@@ -11,10 +12,15 @@ export interface CurrentlyItem {
 
 interface CurrentlySectionProps {
   items: CurrentlyItem[]
+  sectionTitle?: string
   className?: string
 }
 
-export function CurrentlySection({ items, className }: CurrentlySectionProps) {
+export function CurrentlySection({
+  items,
+  sectionTitle = 'STATUS // CURRENTLY',
+  className,
+}: CurrentlySectionProps) {
   return (
     <div
       className={cn(
@@ -22,7 +28,8 @@ export function CurrentlySection({ items, className }: CurrentlySectionProps) {
         className
       )}
     >
-      <SectionLabel>STATUS // CURRENTLY</SectionLabel>
+      <SectionLabel className="text-accent-green">{sectionTitle}</SectionLabel>
+      <GlowBar />
 
       {items.map((item) => (
         <StatusItem

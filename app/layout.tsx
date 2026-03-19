@@ -13,12 +13,14 @@ const spaceMono = Space_Mono({
   weight: ['400', '700'],
   subsets: ['latin'],
   display: 'swap',
+  preload: false,
   variable: '--font-heading',
 })
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   display: 'swap',
+  preload: false,
   variable: '--font-body',
 })
 
@@ -70,33 +72,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang={siteMetadata.language}
       className={`${spaceMono.variable} ${jetbrainsMono.variable} scroll-smooth`}
     >
-      <link
-        rel="apple-touch-icon"
-        sizes="76x76"
-        href={`${basePath}/static/favicons/apple-touch-icon.png`}
-      />
+      <link rel="apple-touch-icon" href={`${basePath}/static/favicons/apple-touch-icon.png`} />
       <link
         rel="icon"
         type="image/png"
-        sizes="32x32"
-        href={`${basePath}/static/favicons/favicon-32x32.png`}
+        sizes="96x96"
+        href={`${basePath}/static/favicons/favicon-96x96.png`}
       />
       <link
         rel="icon"
-        type="image/png"
-        sizes="16x16"
-        href={`${basePath}/static/favicons/favicon-16x16.png`}
+        href={`${basePath}/static/favicons/favicon.svg`}
+        type="image/svg+xml"
+        sizes="any"
       />
+      <link rel="icon" href={`${basePath}/static/favicons/favicon.ico`} />
       <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} />
-      <link
-        rel="mask-icon"
-        href={`${basePath}/static/favicons/safari-pinned-tab.svg`}
-        color="#00ff88"
-      />
-      <meta name="msapplication-TileColor" content="#0a0e1a" />
       <meta name="theme-color" content="#0a0e1a" />
       <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
-      <body className="bg-deep-space font-body text-text-primary flex min-h-screen flex-col pl-[calc(100vw-100%)] antialiased">
+      <body
+        suppressHydrationWarning
+        className="bg-deep-space font-body text-text-primary flex min-h-screen flex-col pl-[calc(100vw-100%)] antialiased"
+      >
         <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
         <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
           <NavBar />

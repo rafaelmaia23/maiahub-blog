@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
+import headerNavLinks from '@/data/headerNavLinks'
 import { NavLink } from './ui/NavLink'
 import { SearchBox } from './ui/SearchBox'
 
@@ -33,12 +34,6 @@ function NavSearchBox({ onSubmitMobile }: { onSubmitMobile?: () => void }) {
   return <SearchBox value={inputValue} onSearch={setInputValue} onSubmit={handleSubmit} />
 }
 
-const navLinks = [
-  { href: '/', label: 'HOME' },
-  { href: '/blog', label: 'POSTS' },
-  { href: '/about', label: 'SOBRE' },
-  { href: '/contact', label: 'CONTATO' },
-]
 
 export function NavBar({ className }: NavBarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -59,13 +54,12 @@ export function NavBar({ className }: NavBarProps) {
             width={220}
             height={50}
             className="h-11 w-auto"
-            priority
           />
         </Link>
 
         {/* Nav Links (desktop) — right after logo */}
-        <nav className="ml-8 hidden items-center gap-6 md:flex" aria-label="Navegação principal">
-          {navLinks.map((link) => (
+        <nav className="ml-8 hidden items-center gap-6 lg:flex" aria-label="Navegação principal">
+          {headerNavLinks.map((link) => (
             <NavLink key={link.href} href={link.href}>
               {link.label}
             </NavLink>
@@ -77,7 +71,7 @@ export function NavBar({ className }: NavBarProps) {
 
         {/* Search (desktop) + Hamburger (mobile) */}
         <div className="flex items-center gap-4">
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <Suspense fallback={<SearchBox />}>
               <NavSearchBox />
             </Suspense>
@@ -86,7 +80,7 @@ export function NavBar({ className }: NavBarProps) {
           {/* Hamburger button */}
           <button
             type="button"
-            className="text-text-secondary hover:text-accent-green inline-flex items-center justify-center p-2 transition-colors md:hidden"
+            className="text-text-secondary hover:text-accent-green inline-flex items-center justify-center p-2 transition-colors lg:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-expanded={mobileOpen}
             aria-label="Abrir menu"
@@ -123,11 +117,11 @@ export function NavBar({ className }: NavBarProps) {
       {/* Mobile menu */}
       {mobileOpen && (
         <nav
-          className="bg-deep-space/95 border-border-line border-t backdrop-blur-md md:hidden"
+          className="bg-deep-space/95 border-border-line border-t backdrop-blur-md lg:hidden"
           aria-label="Menu mobile"
         >
           <div className="flex flex-col gap-1 px-4 py-4">
-            {navLinks.map((link) => (
+            {headerNavLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

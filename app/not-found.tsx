@@ -26,7 +26,7 @@ export default function NotFound() {
 
       {/* Decorative cyan orb */}
       <div
-        className="absolute bottom-0 right-0 h-96 w-96 rounded-full"
+        className="absolute right-0 bottom-0 h-96 w-96 rounded-full"
         style={{
           zIndex: 11,
           background: 'radial-gradient(circle, #00d4ff 0%, transparent 70%)',
@@ -36,20 +36,34 @@ export default function NotFound() {
       />
 
       {/* Corner brackets */}
-      <span className="absolute top-6 left-6 h-6 w-6 border-t-2 border-l-2 border-[#00ff88]" style={{ zIndex: 12 }} />
-      <span className="absolute top-6 right-6 h-6 w-6 border-t-2 border-r-2 border-[#00ff88]" style={{ zIndex: 12 }} />
-      <span className="absolute bottom-6 left-6 h-6 w-6 border-b-2 border-l-2 border-[#00ff88]" style={{ zIndex: 12 }} />
-      <span className="absolute bottom-6 right-6 h-6 w-6 border-b-2 border-r-2 border-[#00ff88]" style={{ zIndex: 12 }} />
+      <span
+        className="absolute top-6 left-6 h-6 w-6 border-t-2 border-l-2 border-[#00ff88]"
+        style={{ zIndex: 12 }}
+      />
+      <span
+        className="absolute top-6 right-6 h-6 w-6 border-t-2 border-r-2 border-[#00ff88]"
+        style={{ zIndex: 12 }}
+      />
+      <span
+        className="absolute bottom-6 left-6 h-6 w-6 border-b-2 border-l-2 border-[#00ff88]"
+        style={{ zIndex: 12 }}
+      />
+      <span
+        className="absolute right-6 bottom-6 h-6 w-6 border-r-2 border-b-2 border-[#00ff88]"
+        style={{ zIndex: 12 }}
+      />
 
       {/* Central content */}
       <div
-        className="relative flex w-full max-w-[672px] flex-col items-center gap-5 px-4 py-16 text-center font-body"
+        className="font-body relative flex w-full max-w-[672px] flex-col items-center gap-5 px-4 py-16 text-center"
         style={{ zIndex: 20 }}
       >
-        <p className="text-[11px] font-bold tracking-[2px] text-[#00ff88]">// ERRO_DE_NAVEGAÇÃO</p>
+        <p className="text-[11px] font-bold tracking-[2px] text-[#00ff88]">
+          {'// ERRO_DE_NAVEGAÇÃO'}
+        </p>
 
         <p
-          className="text-[96px] font-bold leading-none text-[#00d4ff]"
+          className="text-[96px] leading-none font-bold text-[#00d4ff]"
           style={{
             opacity: 0.75,
             filter: 'drop-shadow(0 0 24px #00d4ff88)',
@@ -60,29 +74,39 @@ export default function NotFound() {
 
         {/* Terminal card */}
         <div className="w-full max-w-[576px] overflow-x-auto rounded border border-[#1e2540] bg-[#161829] p-5 text-left">
-          <p className="whitespace-nowrap text-xs font-bold text-[#00ff88]">SISTEMA_DE_RASTREAMENTO v2.4.1</p>
+          <p className="text-xs font-bold whitespace-nowrap text-[#00ff88]">
+            SISTEMA_DE_RASTREAMENTO v2.4.1
+          </p>
           <hr className="my-2 border-[#1e2540]" />
-          <p className="whitespace-nowrap text-xs text-[#8892a8]">&gt; rastreando sinal de navegação...</p>
-          <p className="whitespace-nowrap text-xs text-[#8892a8]">
+          <p className="text-xs whitespace-nowrap text-[#8892a8]">
+            &gt; rastreando sinal de navegação...
+          </p>
+          <p className="text-xs whitespace-nowrap text-[#8892a8]">
             &gt; verificando registro de rotas... [<span className="text-red-400">FALHOU</span>]
           </p>
-          <p className="whitespace-nowrap text-xs text-[#8892a8]">&gt; objeto: não encontrado no mapa estelar</p>
-          <p className="whitespace-nowrap text-xs text-[#a855f7]">&gt; status: TRANSMISSÃO INTERROMPIDA</p>
-          <p className="whitespace-nowrap text-xs text-[#00d4ff]">
+          <p className="text-xs whitespace-nowrap text-[#8892a8]">
+            &gt; objeto: não encontrado no mapa estelar
+          </p>
+          <p className="text-xs whitespace-nowrap text-[#a855f7]">
+            &gt; status: TRANSMISSÃO INTERROMPIDA
+          </p>
+          <p className="text-xs whitespace-nowrap text-[#00d4ff]">
             &gt; última transmissão conhecida:{' '}
             <Link href="/" className="underline hover:text-[#00ff88]">
               [/]
             </Link>
           </p>
           <hr className="my-2 border-[#1e2540]" />
-          <p className="whitespace-nowrap text-xs font-bold text-[#00ff88]">// sugestão: retornar à base</p>
+          <p className="text-xs font-bold whitespace-nowrap text-[#00ff88]">
+            {'// sugestão: retornar à base'}
+          </p>
         </div>
 
         <h1 className="text-4xl font-bold text-[#e0e0f0]">SINAL PERDIDO</h1>
 
         <p className="max-w-[448px] text-sm leading-relaxed text-[#b0bfd4]">
-          A coordenada que você buscava não existe neste setor. Pode ter sido movida, deletada ou nunca ter existido
-          neste quadrante.
+          A coordenada que você buscava não existe neste setor. Pode ter sido movida, deletada ou
+          nunca ter existido neste quadrante.
         </p>
 
         <Link
@@ -92,7 +116,7 @@ export default function NotFound() {
           [ RETORNAR À BASE ]
         </Link>
 
-        <p className="text-xs text-[#8892a8]">// ou explore o arquivo no menu de navegação</p>
+        <p className="text-xs text-[#8892a8]">{'// ou explore o arquivo no menu de navegação'}</p>
       </div>
     </section>
   )

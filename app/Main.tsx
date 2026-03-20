@@ -64,9 +64,7 @@ export default function Home({ posts, currentPage }: HomeProps) {
             </div>
 
             {/* Title */}
-            <h1
-              className="font-heading font-bold text-[#e0e0f0] text-[36px] leading-[1.1] sm:text-[52px]"
-            >
+            <h1 className="font-heading text-[36px] leading-[1.1] font-bold text-[#e0e0f0] sm:text-[52px]">
               ARQUIVO DE
               <br />
               TRANSMISSÕES
@@ -84,7 +82,7 @@ export default function Home({ posts, currentPage }: HomeProps) {
             className="w-full rounded-sm p-[1px] lg:w-[540px] lg:shrink-0"
             style={{ background: 'linear-gradient(135deg, #00ff88, #00e5ff)' }}
           >
-            <div className="font-heading overflow-hidden break-words rounded-sm bg-[#161829] p-4 text-xs">
+            <div className="font-heading overflow-hidden rounded-sm bg-[#161829] p-4 text-xs break-words">
               <p className="font-bold text-[#00ff88]">
                 {'[ TERMINAL v4.2.1 // MAINFRAME MAIAHUB ]'}
               </p>

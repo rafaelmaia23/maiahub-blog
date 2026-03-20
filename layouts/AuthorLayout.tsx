@@ -5,7 +5,13 @@ import Image from '@/components/Image'
 import { CurrentlySection } from '@/components'
 import { GlowBar, SectionLabel, StatItem } from '@/components/ui'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
-import { authorData, currentlyData, osData, missionLogData, manifestoData } from '@/data/siteContent'
+import {
+  authorData,
+  currentlyData,
+  osData,
+  missionLogData,
+  manifestoData,
+} from '@/data/siteContent'
 import { resolveColor } from '@/lib/colorUtils'
 
 interface Props {
@@ -81,14 +87,17 @@ export default function AuthorLayout({ children, content }: Props) {
             </div>
 
             {/* Bio longa */}
-            <div className="prose prose-invert prose-sm font-body max-w-none">
-              {children}
-            </div>
+            <div className="prose prose-invert prose-sm font-body max-w-none">{children}</div>
 
             {/* Stats row */}
             <div className="flex items-center justify-between border-t border-b border-[#1e2540] py-3">
               {authorData.stats.map((stat) => (
-                <StatItem key={stat.label} value={stat.value} label={stat.label} color={stat.color} />
+                <StatItem
+                  key={stat.label}
+                  value={stat.value}
+                  label={stat.label}
+                  color={stat.color}
+                />
               ))}
             </div>
           </div>
@@ -104,12 +113,16 @@ export default function AuthorLayout({ children, content }: Props) {
             )}
             {/* Terminal block */}
             <div className="border-border-line bg-deep-space flex flex-col gap-1.5 rounded-sm border p-4">
-              <p className="font-body text-xs text-accent-green">{'> missao.init()'}</p>
-              <p className="font-body text-xs text-accent-green">{'> status: ATIVA'}</p>
-              <p className="font-body text-xs text-text-muted">{'# construído com curiosidade e café'}</p>
-              <p className="font-body text-xs text-accent-green/60">{'> Explorando sistemas, construindo mundos.'}</p>
-              <p className="font-body animate-pulse text-xs text-accent-green">
-                <span className="inline-block h-[10px] w-[7px] bg-accent-green align-middle" />
+              <p className="font-body text-accent-green text-xs">{'> missao.init()'}</p>
+              <p className="font-body text-accent-green text-xs">{'> status: ATIVA'}</p>
+              <p className="font-body text-text-muted text-xs">
+                {'# construído com curiosidade e café'}
+              </p>
+              <p className="font-body text-accent-green/60 text-xs">
+                {'> Explorando sistemas, construindo mundos.'}
+              </p>
+              <p className="font-body text-accent-green animate-pulse text-xs">
+                <span className="bg-accent-green inline-block h-[10px] w-[7px] align-middle" />
               </p>
             </div>
           </div>
@@ -175,10 +188,7 @@ export default function AuthorLayout({ children, content }: Props) {
 
         {/* Sidebar */}
         <aside className="flex flex-col gap-6">
-          <CurrentlySection
-            items={currentlyData.items}
-            sectionTitle={currentlyData.sectionTitle}
-          />
+          <CurrentlySection items={currentlyData.items} sectionTitle={currentlyData.sectionTitle} />
         </aside>
       </div>
     </div>

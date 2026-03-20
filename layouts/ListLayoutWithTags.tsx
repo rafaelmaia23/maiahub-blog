@@ -130,7 +130,7 @@ export default function ListLayoutWithTags({ posts, title }: ListLayoutProps) {
         <h1 className="font-body text-text-primary text-2xl font-bold sm:text-3xl">
           {'// ARQUIVO DE TRANSMISSÕES'}
         </h1>
-        <div className="flex shrink-0 items-center gap-2 rounded bg-[#0d1f14] px-4 py-2 border border-[#00ff88]">
+        <div className="flex shrink-0 items-center gap-2 rounded border border-[#00ff88] bg-[#0d1f14] px-4 py-2">
           <span className="h-1.5 w-1.5 rounded-sm bg-[#00ff88]" />
           <span className="font-body text-[11px] font-bold text-[#00ff88]">
             {filteredPosts.length} registros encontrados
@@ -160,7 +160,7 @@ export default function ListLayoutWithTags({ posts, title }: ListLayoutProps) {
         <div className="flex flex-col gap-6">
           {/* Column header */}
           <div className="flex items-center gap-4">
-            <span className="font-body text-text-primary whitespace-nowrap text-sm font-bold">
+            <span className="font-body text-text-primary text-sm font-bold whitespace-nowrap">
               {'// TODAS AS TRANSMISSÕES'}
             </span>
             <GlowBar className="flex-1" />
@@ -302,11 +302,7 @@ function FilterSidebar({
           <GlowBar />
           <div className="flex flex-wrap gap-2">
             {inactiveTags.map((tag) => (
-              <Tag
-                key={tag}
-                text={`${tag} (${tagCounts[tag]})`}
-                onClick={() => onToggleTag(tag)}
-              />
+              <Tag key={tag} text={`${tag} (${tagCounts[tag]})`} onClick={() => onToggleTag(tag)} />
             ))}
           </div>
         </div>

@@ -128,10 +128,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
             sectionTitle={authorData.sectionTitle}
             stats={authorData.stats}
           />
-          <CurrentlySection
-            items={currentlyData.items}
-            sectionTitle={currentlyData.sectionTitle}
-          />
+          <CurrentlySection items={currentlyData.items} sectionTitle={currentlyData.sectionTitle} />
         </aside>
       </div>
     </div>

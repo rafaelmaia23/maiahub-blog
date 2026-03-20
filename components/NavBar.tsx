@@ -34,7 +34,6 @@ function NavSearchBox({ onSubmitMobile }: { onSubmitMobile?: () => void }) {
   return <SearchBox value={inputValue} onSearch={setInputValue} onSubmit={handleSubmit} />
 }
 
-
 export function NavBar({ className }: NavBarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
 

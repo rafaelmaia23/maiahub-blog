@@ -63,7 +63,7 @@ export function TransmissionCard({
         href={`/blog/${slug}`}
         className="font-body text-accent-green hover:text-accent-green-dim text-xs font-semibold transition-colors"
       >
-        READ TRANSMISSION {'>'}
+        LER TRANSMISSÃO {'>'}
       </Link>
     </article>
   )

@@ -23,14 +23,14 @@ export function Pagination({
   return (
     <nav
       className={cn('bg-card flex items-center justify-center gap-0 rounded-sm', className)}
-      aria-label="Pagination"
+      aria-label="Paginação"
     >
       <PaginationItem
         href={!onPageChange && hasPrev ? `${basePath}/page/${currentPage - 1}` : undefined}
         disabled={!hasPrev}
         onClick={onPageChange && hasPrev ? () => onPageChange(currentPage - 1) : undefined}
       >
-        {'< PREV'}
+        {'< ANT'}
       </PaginationItem>
 
       {pages.map((page) => (
@@ -49,7 +49,7 @@ export function Pagination({
         disabled={!hasNext}
         onClick={onPageChange && hasNext ? () => onPageChange(currentPage + 1) : undefined}
       >
-        {'NEXT >'}
+        {'PRÓX >'}
       </PaginationItem>
     </nav>
   )

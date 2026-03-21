@@ -133,7 +133,7 @@ export default function ListLayoutWithTags({ posts, title }: ListLayoutProps) {
         <div className="flex shrink-0 items-center gap-2 rounded border border-[#00ff88] bg-[#0d1f14] px-4 py-2">
           <span className="h-1.5 w-1.5 rounded-sm bg-[#00ff88]" />
           <span className="font-body text-[11px] font-bold text-[#00ff88]">
-            {filteredPosts.length} registros encontrados
+            {filteredPosts.length} {filteredPosts.length === 1 ? 'registro encontrado' : 'registros encontrados'}
           </span>
         </div>
       </div>

@@ -12,7 +12,7 @@ const siteMetadata = {
   email: 'contato@maiahub.com.br',
   locale: 'pt-BR',
   stickyNav: true,
-  serverBootDate: '2025-01-01T00:00:00Z', // Data de "inauguração" do servidor — usada no uptime da home
+  serverBootDate: '2026-03-19T00:00:00Z', // Data de "inauguração" do servidor — usada no uptime da home
   analytics: {},
   newsletter: null,
   comments: null,

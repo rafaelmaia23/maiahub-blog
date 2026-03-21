@@ -13,12 +13,12 @@ export const categories: Record<string, CategoryConfig> = {
     label: 'TECNOLOGIA',
     color: 'bg-[#00d4ff] text-[#0D0D0D]',
   },
-  carreira: {
-    label: 'CARREIRA',
+  desenvolvimento: {
+    label: 'DESENVOLVIMENTO',
     color: 'bg-[#7b2fff] text-white',
   },
-  hobbies: {
-    label: 'HOBBIES',
+  entretenimento: {
+    label: 'ENTRETENIMENTO',
     color: 'bg-[#f97316] text-[#0D0D0D]',
   },
   'rpg-world': {
@@ -37,8 +37,8 @@ export const categories: Record<string, CategoryConfig> = {
     label: 'LEITURAS',
     color: 'bg-[#f59e0b] text-[#0D0D0D]',
   },
-  ideias: {
-    label: 'IDEIAS',
+  pessoal: {
+    label: 'PESSOAL',
     color: 'bg-[#10b981] text-[#0D0D0D]',
   },
 }

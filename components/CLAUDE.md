@@ -122,3 +122,10 @@ Rodapé com copyright e links de navegação. Links hardcoded: HOME, SOBRE, CONT
 ```tsx
 <Footer className?: string />
 ```
+
+### `Gallery`
+Galeria de imagens com grid de thumbnails clicáveis e lightbox com navegação. Client component. Usa `next/image` para thumbnails otimizados e o plugin `NextJsImage` do `yet-another-react-lightbox` para o lightbox.
+```tsx
+<Gallery images: Array<{ src: string; alt?: string }> />
+```
+Disponível como componente MDX — uso direto no corpo dos posts.

@@ -47,7 +47,8 @@
     "remark-math": "^6.0.0",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.2",
-    "unist-util-visit": "^5.1.0"
+    "unist-util-visit": "^5.1.0",
+    "yet-another-react-lightbox": "^3.30.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",

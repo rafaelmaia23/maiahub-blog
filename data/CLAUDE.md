@@ -37,6 +37,32 @@ summary: 'Resumo do post para o card na listagem.'
 Conteúdo do post aqui.
 ```
 
+### Componentes MDX disponíveis no corpo do post
+
+Além do markdown padrão, os posts aceitam os seguintes componentes JSX no corpo:
+
+| Componente | Descrição |
+|-----------|-----------|
+| `<Gallery>` | Galeria de imagens com lightbox e navegação |
+| `<TOCInline>` | Índice inline do post |
+| `<Image>` | Imagem otimizada via `next/image` |
+
+#### `<Gallery>`
+
+Exibe um grid de thumbnails clicáveis. Ao clicar, abre lightbox com navegação entre as imagens do grupo.
+
+```mdx
+<Gallery images={[
+  { src: "/static/images/posts/meu-post/img1.jpg", alt: "Descrição 1" },
+  { src: "/static/images/posts/meu-post/img2.jpg", alt: "Descrição 2" },
+  { src: "/static/images/posts/meu-post/img3.jpg", alt: "Descrição 3" },
+]} />
+```
+
+- `images`: array de `{ src: string; alt?: string }`
+- `src`: caminho relativo à raiz pública (ex: `/static/images/posts/...`)
+- Imagens devem ficar em `public/static/images/posts/<slug>/`
+
 ---
 
 ## Authors MDX (`data/authors/*.mdx`)

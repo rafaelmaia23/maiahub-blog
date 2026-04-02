@@ -1,0 +1,92 @@
+---
+title: 'Do Chat ao Agente: Como Usei o Claude Code pra Construir Meu Blog'
+date: '2026-04-02'
+tags: ['claude-code', 'ai', 'desenvolvimento', 'workflow']
+category: 'desenvolvimento'
+summary: 'Usei um AI coding agent pela primeira vez pra construir esse blog do zero — design system, componentes e tudo mais. Aqui está o que aprendi sobre o processo, os limites da ferramenta e o que isso muda pra quem trabalha com código.'
+authors: ['default']
+draft: false
+---
+
+Se você ainda usa AI colando código no chat e esperando a resposta, você está um passo atrás — e eu estava também, até pouco tempo atrás.
+
+Como estudante de desenvolvimento e entusiasta de tecnologia, tento acompanhar de perto as novidades e testar coisas novas. As ferramentas de AI por chat logo se tornaram diárias na minha rotina de estudo e codificação. Um erro que não entendi? Fácil — cola no chat e pede pra ele explicar cada detalhe. Uma solução do Stack Overflow que não entendeu? Cola e pede explicação linha a linha. Uma feature difícil de implementar? Não seja por isso, faz um prompt e pede explicação.
+
+Faz um tempo que venho ouvindo falar dos famosos agentes de programação — AI coding agents — como o [OpenCode](https://opencode.ai/), o [Codex](https://openai.com/codex) e o que mais apareceu nas minhas notícias: o [Claude Code](https://claude.ai/code). Já havia lido sobre como funcionavam, mas até então nunca havia testado por mim mesmo. Com a vontade de iniciar um blog pessoal, resolvi construí-lo usando um desses assistentes de criação de código pra ver como estava essa novidade na prática.
+
+## O Projeto
+
+Antes de tudo, deixa eu falar do projeto. Era algo simples: um blog pessoal, poucas páginas, já com uma base consolidada num template — o [Tailwind Blog Template](https://github.com/timlrx/tailwind-nextjs-starter-blog) — desenvolvido em [Next.js](https://nextjs.org/) e [Tailwind CSS](https://tailwindcss.com/), usando [Contentlayer](https://contentlayer.dev/). Em grande parte, o "backend" só precisava de um ajuste ou outro, e seria necessário desenvolver o "frontend" do zero para o visual que eu imaginava.
+
+Nos meus estudos, foquei mais na parte que gosto: backend. Consigo me virar bem criando um front em React, mas me surpreende quem realmente gosta de mexer com CSS — vocês são demais, gente — o que não é meu caso. Pesquisando sobre ferramentas de AI, me deparei com um novo app de design, o [Pencil](https://www.pencil.dev/). Nele você conecta um modelo de AI ao MCP deles e o modelo constrói o visual através de prompts.
+
+> **O que é MCP?** Para quem não sabe — como eu não sabia — o MCP, ou [Model Context Protocol](https://modelcontextprotocol.io/), é um padrão aberto criado pela Anthropic que permite que modelos de linguagem se comuniquem com outras ferramentas, acessando dados de forma segura e garantindo mais integração.
+
+Pronto, meu plano estava formado: testar duas coisas de uma vez, criar o visual e o código, tudo usando AI, pra ter o feeling de como estavam as novidades. O design pelo [Pencil](https://www.pencil.dev/) e o código pelo [Claude Code](https://claude.ai/code) — escolhido simplesmente por ser o agente que mais apareceu nos meus feeds.
+
+## O Processo: Do Conceito ao Design System
+
+Decidi começar trabalhando no conceito que eu queria pro blog. Minha ideia inicial era um visual temático retrô-futurista de nave espacial e coisas relacionadas ao espaço. Tinha essa vaga ideia e comecei conversando com o Claude pra me ajudar a desenvolvê-la. Nesse passo, ele agiu como um **"amigo investido"** no projeto — me fazendo perguntas pra eu definir com mais precisão o que queria, clarear a ideia como um todo e pensar em casos específicos que ainda não havia considerado.
+
+Desse processo saiu uma descrição completa do que eu imaginava o blog ser visual e funcionalmente. Com base nisso, chegou a hora de testar o Pencil com o Claude. Conectei o MCP e fiz o prompt pra ele começar criando um design system. Fiquei surpreso quando, sozinho — seguindo o prompt — o Claude Code começou a editar o Pencil e criar a página do design system. Parecia mágica, mas era só tech mesmo.
+
+Depois disso, fui pedindo pra ele criar os componentes mais atômicos do app, em seguida os compostos, finalizando com o layout de cada página uma a uma. O resultado me surpreendeu bastante: eu, que não sou designer, consegui em poucas horas montar um projeto visual completo, fiel à minha ideia inicial, e que serviria como base para o código das páginas.
+
+<Gallery
+  images={[
+    {
+      src: '/static/images/blog/construindo-meu-blog-com-claude-code/design-system-1.png',
+      alt: 'Design System - Cores e tipografia',
+    },
+    {
+      src: '/static/images/blog/construindo-meu-blog-com-claude-code/design-system-2.png',
+      alt: 'Design System - Espaçamentos e componetes atômicos',
+    },
+    {
+      src: '/static/images/blog/construindo-meu-blog-com-claude-code/design-system-3.png',
+      alt: 'Design System - Componentes compostos',
+    },
+  ]}
+/>
+
+## Do Design ao Código
+
+Com o visual finalizado e animado pra seguir o processo, chegou a hora de ligar o código. E, nossa, que surpresa — o Claude Code puxou o template, limpou o visual antigo, leu o design e começou a criar todos os componentes do projeto. Em minutos, tudo pronto pra uso. A qualidade do código realmente me surpreendeu.
+
+Até então eu estudava pra aprender uma linguagem com sua sintaxe, um framework, escrever o código — e essa ferramenta simplesmente fez tudo isso em minutos, com prompts guiando o que eu queria. Ao montar as páginas, elas vinham na primeira versão quase 100% fiéis ao que estava no Pencil, e com mais uns dois ou três prompts o que precisava ser ajustado ficava pronto.
+
+Na hora de ajustar o backend — o template vinha organizado pra posts com tags, mas eu queria que cada post tivesse uma categoria e múltiplas tags — o Claude resolveu sem grandes dificuldades e deixou do jeito que eu queria.
+
+## Quando Tudo Quebrou (e o que Aprendi com Isso)
+
+Claro que nem tudo é perfeito. Em determinado momento, o Claude precisava sincronizar dois inputs em uma página específica — coisa que nem chegou à versão final do blog — e ao sair da página, limpar um deles. Uma tarefa não tão complexa, mas nisso ele teve dificuldade. Após errar uma vez, começou a "solucionar" de formas cada vez mais mirabolantes, criando um **overengineering** que nunca funcionava.
+
+Parecia que a ferramenta tinha perdido totalmente a qualidade e o entendimento do que estava fazendo. Ao pesquisar mais sobre o que estava acontecendo, entendi que o problema era o contexto da conversa, que havia crescido demais. Esses agentes têm uma parábola de qualidade em relação ao contexto: pouco contexto gera resultados ruins, mas contexto em excesso também. Existe um meio-termo onde a qualidade é máxima — e é aí que entra a **engenharia de contexto**, algo que planejo estudar mais.
+
+Entendido o problema, busquei a solução no [Stack Overflow](https://stackoverflow.com/), limpei o contexto e toda a implementação em overengineering, e tentei de novo do zero. Dessa vez, dei o resultado que queria, o caminho exato que queria que fosse implementado e como — contexto suficiente pra tarefa. Como mágica, ele resolveu sem mais dificuldades.
+
+## O Futuro do Desenvolvedor
+
+Esse projeto, por mais simples que seja, me fez entender algumas coisas sobre como esses assistentes de criação de código funcionam — e me fez pensar em como vai ser o futuro da profissão. Antes, código era algo valioso, demorado e caro. Agora virou **commodity**. E junto disso, novas áreas de conhecimento começaram a nascer: engenharia de prompt, engenharia de contexto, phase planning, loop agêntico, cadeia de prompts, entre muitos outros.
+
+No meio disso tudo, fico me perguntando: onde de fato vai estar o trabalho do desenvolvedor? Seremos engolidos pela AI, como alguns afirmam? Sempre vi o trabalho de desenvolvimento em três etapas:
+
+1. **Planejamento** — Você entende o problema e pensa nas possíveis soluções.
+2. **Codificação** — Você escolhe uma das soluções e a transforma em código.
+3. **Validação** — Você valida a solução, vê se ela funciona e se passa em todos os testes.
+
+As ferramentas de criação de código por AI chegam com força na **etapa 2** — aceleram a codificação e ajudam a transformar a solução escolhida em arquivos para compilar. Mas nas etapas 1 e 3, apesar de conseguirem ajudar, estão longe de tirar o desenvolvedor da jogada. Ainda é necessário entender a lógica de produto, entender por que usar uma arquitetura X e não Y, por que construir uma solução seguindo um caminho e não outro. E apesar das AIs ajudarem a escrever testes, uma validação humana ainda é essencial. Então, não — não acredito que o desenvolvedor será engolido pela AI e ficará irrelevante.
+
+Depois de ter passado por esse processo com o Claude Code, sinto que se tivesse usado ele numa linguagem que não fosse capaz de ler e entender, eventualmente estaria fadado a encontrar um bug que a AI não conseguiria resolver — e eu não teria pra onde correr. **A capacidade de entender o código e perceber quando algo vai funcionar ou não continua sendo essencial.**
+
+Então o que isso tudo significa pra o desenvolvedor? Na minha opinião, ainda é necessário aprender linguagem, framework e código de verdade — afinal, sem isso, como vou validar a saída do meu agente? Mas fica indiscutível que a AI precisa entrar no fluxo de trabalho. Com isso, o trabalho do desenvolvedor se torna algo mais próximo de um **orquestrador**: entender os problemas, pensar as soluções e orquestrar um agente — ou vários — pra escrever a solução, e depois validar tudo pra garantir a qualidade.
+
+Acredito que quem não se adequar ao novo modelo vai acabar ficando pra trás. E quem entender errado — usar AI e deixar ela fazer tudo sem entender o que está acontecendo e sem ser capaz de validar — vai eventualmente bater numa parede num bug que não vai conseguir escalar.
+
+## Empolgação e Frustração
+
+No meio disso, fico com um sentimento duplo de empolgação e frustração. Empolgado de aprender novas tecnologias e de conseguir fazer mais coisas no mesmo tempo. E frustrado porque meu maior esforço estava em aprender a escrever linha a linha de código — e isso se tornou irrelevante até certo ponto. A AI faz isso mais rápido e melhor do que eu; eu só preciso validar tudo certinho. Minha sorte é que, pela faculdade, tive uma boa base em design de código, arquitetura e engenharia de software — coisas que nunca vão perder valor nessa profissão.
+
+Acredito que **a barreira de entrada no mercado de tecnologia subiu com essas novas tecnologias, e não caiu.** Agora é preciso entender coisas mais profundas sobre o _por que_ fazer algo, e não apenas conseguir escrever o código — escrever código se tornou banal e o mercado ficou mais competitivo. Mas temos que jogar da forma que o jogo funciona, e prefiro ver isso como uma nova oportunidade de aprender. E se por um lado tem mais coisas a aprender agora, por outro consigo fazer coisas mais complexas e melhores no mesmo tempo.
+
+Continuarei me adaptando ao novo fluxo de trabalho e aos conhecimentos que essas novas AIs trazem — e convido você que chegou até aqui a fazer o mesmo. Se ainda não fez: pegue um projeto pequeno, teste esses novos agentes, comece um passo de cada vez, e não deixe o mercado te colocar de escanteio por estar fazendo as coisas do jeito antigo.
